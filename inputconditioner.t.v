@@ -31,8 +31,11 @@ module testConditioner();
 			$dumpvars(0, dut);
 			$monitor("t=%d, pin=%d, conditioned=%d, rising=%d, falling=%d", $time, pin, conditioned, rising, falling);
 			
-
-			pin = 1; #100
+			pin = 0; #100
+			pin = 1; #200
+			pin = 0; #200
+            pin = 1; #80
+			pin = 0; #100
 
 
 			$finish;
