@@ -22,6 +22,7 @@ output reg  negativeedge    // 1 clk pulse at falling edge of conditioned
     reg synchronizer1 = 0;
     
     always @(posedge clk ) begin
+        $display("t=%d,  noisysignal=%d, conditioned=%d, posEdge=%d, negEdge=%d",$time,noisysignal,conditioned,positiveedge,negativeedge);
         if(conditioned == synchronizer1)
             counter <= 0;
         else begin
