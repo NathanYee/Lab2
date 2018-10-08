@@ -37,11 +37,23 @@ module testshiftregister();
 			clk = 1; #100; clk = 0; #100;
 			clk = 1; #100; clk = 0; #100;
 			clk = 1; #100; clk = 0; #100;
-			// CHECK "Serial in / parallel out", pdataOut, 8'b01001111
 			if (pdataOut !== 8'b01001111)
-				$display("%s: actually %b, should be %b", "Serial in / parallel out", pdataOut, 8'b01001111);
+				$display("%s: actually %b, should be %b", "Serial in / parallel out", pdataOut, 8'b00001111);
 			#100;
-		
+
+			// Test parallel in / both out
+			pdataIn = 8'b01010101; pload = 1;
+			clk = 1; #100; clk = 0; #100;
+			if (pdataOut !== 8'b01010101)
+				$display("%s: actually %b, should be %b", "Parallel in / parallel out", pdataOut, 8'b01010101);
+			#100;
+		 	pclk = 1; clk = 1; #100 pclk = 0; clk = 0; #100
+			if (pdataOut !== 8'b00101010)
+				$display("%s: actually %b, should be %b", "Parallel in / parallel out", pdataOut, 8'b00101010);
+			if (sdataOut !== 1)
+				$display("%s: actually %b, should be %b", "Parallel in / serial out", sdataOut, 1'b1);
+
+
 		end
 
 endmodule
