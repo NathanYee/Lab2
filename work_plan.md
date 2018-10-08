@@ -34,7 +34,14 @@
   * Hours: 4
   * Day: Oct 18
 
+## Arduino Integration
+* Arduino code for communication
+  * Hours: 1
+  * Day: Oct 18
+
 ## Final submission
 * report
   * Hours: 3
   * Day: Oct 19
+
+
