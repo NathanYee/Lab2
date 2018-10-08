@@ -64,7 +64,6 @@ module testshiftregister();
 			if (sdataOut !== 1)
 				$display("%s: actually %b, should be %b", "Parallel in / serial out", sdataOut, 1'b1);
 
-
 		end
 
 endmodule

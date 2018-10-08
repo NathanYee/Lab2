@@ -22,8 +22,9 @@ output              sdataOut       // Positive edge synchronized
 		assign sdataOut = pdataOut[width-1]; // Expose the MSB as "serial out"
 		reg pclkWas; // To detect positive edges in pclk
 
-		// Note that there exists a sort of race condition here.  What happens if pclk has an edge while pload is
-		// set?  The answer is undefined; don't do it.
+		// Note that there exists a race condition here.  What happens if pclk has an edge while pload is
+		// set?  The answer is undefined; don't do it.  Hopefully this freedom should let the synthesizer
+		// optimizie a little more.
     always @(posedge clk) begin
 
 			// Peripheral clock; or, putting the "shift" in "shift register"
