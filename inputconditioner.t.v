@@ -37,13 +37,13 @@ module testConditioner();
 			pin = 1; #85 // stop pin 5 units of time before lower half clock cycle finishes
             pin = 0; #5 // turn pin off and wait 5 units of time for clock cycle to finish
             pin = 0; #20 // wait a complete clock cycle
-            $display("t=%d, conditioned=%d, risingEdge=%d", $time, conditioned, rising);
+            $display("t=%d, conditioned=%d, risingEdge=%d  | Econditioned=0, ErisingEdge=0", $time, conditioned, rising);
             pin = 0; #1 // conditioned should turn after with rising edge 
-            $display("t=%d, conditioned=%d, risingEdge=%d", $time, conditioned, rising);
+            $display("t=%d, conditioned=%d, risingEdge=%d  | Econditioned=1, ErisingEdge=1", $time, conditioned, rising);
 			pin = 0; #79 // conditioned should be on right before falling edge
-            $display("t=%d, conditioned=%d, fallingEdge=%d", $time, conditioned, falling);
+            $display("t=%d, conditioned=%d, fallingEdge=%d | Econditioned=1, EfallingEdge=0", $time, conditioned, falling);
 			pin = 0; #1 // conditioned shoudl turn off with falling edge
-            $display("t=%d, conditioned=%d, fallingEdge=%d", $time, conditioned, falling);
+            $display("t=%d, conditioned=%d, fallingEdge=%d | Econditioned=0, EfallingEdge=1", $time, conditioned, falling);
 
             // Debouncing
             pin = 0; #100 // let signal reset
@@ -68,14 +68,8 @@ module testConditioner();
             pin = 0; #3
             pin = 1; #4
             pin = 0; #5
-            pin = 1; #17
-            pin = 0; #16
-            pin = 1; #10
-            pin = 0; #10
-            pin = 1; #10
-            pin = 0; #10
-            pin = 1; #10
-            pin = 0; #10
+            $display("t=%d, conditioned=%d | Econditioned=0", $time, conditioned);
+
 
 
 			$finish;
