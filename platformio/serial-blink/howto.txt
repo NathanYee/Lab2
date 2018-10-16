@@ -1,0 +1,2 @@
+May want to reset before use.
+echo -n "1" >> /dev/ttyACM0
