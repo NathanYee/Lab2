@@ -25,28 +25,28 @@ module finiteStateMachine
         case(state)
             // J: begin
             // end
-            A: begin
+            A: begin // Address
                 dm_we = 0;
                 sr_we = 0;
 
                 case(number)
-                    0: begin
+                    0: begin // check mosi_pin to determine Read/write
                         addr_we = 0; // TODO: check timing
                         if (mosi_pin) state = R;
                         else state = W;
                         number = 7;
                     end
-                    1: begin
+                    1: begin // write address to address latch
                         addr_we = 1; // TODO: check timing
                         number = number - 1;
                     end
-                    default: begin
+                    default: begin // let shift register read in address data
                         addr_we = 0;
                         number = number - 1;
                     end
 
             end
-            R: begin
+            R: begin // Read
                 case (number)
                     7: begin
                         sr_we = 1; // TODO: check timing
@@ -60,7 +60,7 @@ module finiteStateMachine
                         number = number - 1;
                     end
             end
-            W: begin
+            W: begin // Write
                 case (number)
                     0: begin
                         dm_we = 1;  // TODO: check timing
