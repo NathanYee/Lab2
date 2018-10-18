@@ -12,6 +12,7 @@ module finiteStateMachine
 
 	reg [2:0] state;
 	reg [2:0] substate;
+	reg addr_we_next_cycle;
 
 	localparam J = 1; // Wait
 	localparam A = 2; // Address
@@ -29,7 +30,7 @@ module finiteStateMachine
 						substate = 6;
 					end else substate = 0;
 				A: if (substate == 0) begin
-						addr_we = 1; // Save the address
+						addr_we_next_cycle = 1; // Save the address
 						state = Rw;
 					end else substate = substate - 1;
 				Rw: if (mosi == 1) begin
@@ -48,7 +49,10 @@ module finiteStateMachine
 			endcase
 		end
 		else begin // not sck
-			addr_we = 0;
+			if (addr_we_next_cycle == 1) begin
+				addr_we = 1;
+				addr_we_next_cycle = 0;
+			end else 	addr_we = 0;
 			sr_we = 0;
 		end
 	end
