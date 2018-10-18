@@ -4,7 +4,7 @@ module finiteStateMachine
 	input sck, // SCK rising edge
 	input cs,      
 	input mosi,
-	output reg miso_en,
+	output miso_en,
 	output reg dm_we,
 	output reg addr_we,
 	output reg sr_we
@@ -30,8 +30,8 @@ module finiteStateMachine
 					end else substate = 0;
 				A: if (substate == 0) begin
 						addr_we = 1; // Save the address
-						state = Rw; substate = 0;
-					end
+						state = Rw;
+					end else substate = substate - 1;
 				Rw: if (mosi == 1) begin
 						sr_we = 1;
 						state = R; substate = 7;
@@ -40,13 +40,12 @@ module finiteStateMachine
 					end
 				R: if (substate == 0) begin
 						state = J; substate = 0;
-					end
+					end else substate = substate - 1;
 				W: if (substate == 0) begin
 						dm_we = 1;
 						state = J; substate = 0;
-					end
+					end else substate = substate - 1;
 			endcase
-			substate = substate - 1;
 		end
 		else begin // not sck
 			addr_we = 0;
