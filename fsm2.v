@@ -34,9 +34,9 @@ module finiteStateMachine
 					end
 				Rw: if (mosi == 1) begin
 						sr_we = 1;
-						state = R; substate = 0;
+						state = R; substate = 7;
 					end else begin
-						state = W; substate = 0;
+						state = W; substate = 7;
 					end
 				R: if (substate == 0) begin
 						state = J; substate = 0;
