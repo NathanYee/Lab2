@@ -39,7 +39,7 @@ output              sdataOut       // Positive edge synchronized
 
 			// Parallel loading
 			if (pload == 1) begin
-				$display("SR parallel loading value %b", pdataIn);
+				$display("t = %d, SR parallel loading value %b", $time, pdataIn);
 				mem = pdataIn;
 			end
 
