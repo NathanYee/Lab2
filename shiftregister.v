@@ -38,9 +38,10 @@ output              sdataOut       // Positive edge synchronized
 				pclkWas = pclk;
 
 			// Parallel loading
-			if (pload == 1) 
+			if (pload == 1) begin
 				$display("SR parallel loading value %b", pdataIn);
 				mem = pdataIn;
+			end
 
     end
 endmodule
