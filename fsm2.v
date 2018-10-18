@@ -26,13 +26,14 @@ module fsm2
 
 	always @(posedge clk) begin
 
+		if (state == J && !cs) begin
+			$display("t = %d, go to state A", $time);
+			state = A;
+			substate = 6;
+		end
+			
 		if (sck && !sck_was) begin
 			case(state)
-				J: if (!cs) begin
-						$display("t = %d, go to state A", $time);
-						state = A;
-						substate = 6;
-					end else substate = 0;
 				A: if (substate == 0) begin
 						$display("t = %d, go to state Rw", $time);
 						addr_we_next_cycle = 1; // Save the address
@@ -66,6 +67,7 @@ module fsm2
 		end else 	addr_we = 0;
 
 		sr_we = 0;
+		dm_we = 0;
 		sck_was = sck;
 	end
 
