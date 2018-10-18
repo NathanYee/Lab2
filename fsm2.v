@@ -10,9 +10,6 @@ module fsm2
 	output reg sr_we
 );
 
-	reg [2:0] state;
-	reg [2:0] substate;
-	reg addr_we_next_cycle;
 
 	localparam J = 1; // Wait
 	localparam A = 2; // Address
@@ -20,40 +17,50 @@ module fsm2
 	localparam R = 4; // Read
 	localparam W = 5; // write
 
+	reg [2:0] state = J;
+	reg [2:0] substate = 0;
+	reg addr_we_next_cycle = 0;
+
 	assign miso_en = 1; // We can just leave it enabled
 
 	always @(posedge clk) begin
+
+		if (addr_we_next_cycle == 1) begin
+			addr_we = 1;
+			addr_we_next_cycle = 0;
+		end else 	addr_we = 0;
+		sr_we = 0;
+
 		if (sck) begin
 			case(state)
 				J: if (!cs) begin
+						//$display("Go to state A");
 						state = A;
 						substate = 6;
 					end else substate = 0;
 				A: if (substate == 0) begin
+						//$display("Go to state Rw");
 						addr_we_next_cycle = 1; // Save the address
 						state = Rw;
 					end else substate = substate - 1;
 				Rw: if (mosi == 1) begin
+						//$display("Go to state R");
 						sr_we = 1;
 						state = R; substate = 7;
 					end else begin
+						//$display("Go to state W");
 						state = W; substate = 7;
 					end
 				R: if (substate == 0) begin
+						//$display("Go to state J");
 						state = J; 
 					end else substate = substate - 1;
 				W: if (substate == 0) begin
+						//$display("Go to state J");
 						dm_we = 1;
 						state = J;
 					end else substate = substate - 1;
 			endcase
-		end
-		else begin // not sck
-			if (addr_we_next_cycle == 1) begin
-				addr_we = 1;
-				addr_we_next_cycle = 0;
-			end else 	addr_we = 0;
-			sr_we = 0;
 		end
 	end
 

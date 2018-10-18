@@ -15,7 +15,7 @@ module testfsm();
  	corelogic cl(clk, sck, cs, mosi, miso, miso_we);
 
 	initial begin
-		$dumpfile("fsm.vcd");
+		$dumpfile("corelogic.vcd");
 		$dumpvars(0, cl);
 
 		clk = 0; sck = 0; cs = 1; mosi = 0; `TICK;
