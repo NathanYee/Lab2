@@ -1,4 +1,4 @@
-module finiteStateMachine
+module fsm2
 (
 	input clk,
 	input sck, // SCK rising edge
@@ -40,11 +40,11 @@ module finiteStateMachine
 						state = W; substate = 7;
 					end
 				R: if (substate == 0) begin
-						state = J; substate = 0;
+						state = J; 
 					end else substate = substate - 1;
 				W: if (substate == 0) begin
 						dm_we = 1;
-						state = J; substate = 0;
+						state = J;
 					end else substate = substate - 1;
 			endcase
 		end
