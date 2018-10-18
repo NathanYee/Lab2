@@ -20,7 +20,28 @@ module testfsm();
 
 		clk = 0; sck = 0; cs = 1; mosi = 0; `TICK;
 
-		cs = 0; `TICK;  // Set chip-select low 
+		cs = 0; `TICK; // First, make sure the data starts out as zeroes
+
+		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // The address
+		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
+		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
+		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
+		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
+		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
+		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
+
+		sck = 0; mosi = 1; `TICK; sck = 1; `TICK; // Read mode
+
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK; // Read the data
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+
+		cs = 1; `TICK; cs = 0; `TICK; // Write 0b00110011 to the address
 
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // The address
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
@@ -33,16 +54,15 @@ module testfsm();
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // Write mode
 
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // Data to write
-		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
-		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
+		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
+		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
 
-		cs = 1; `TICK; cs = 0; `TICK;
-
+		cs = 1; `TICK; cs = 0; `TICK; // See if the data is actually there
 
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // The address
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
@@ -54,14 +74,13 @@ module testfsm();
 
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK; // Read mode
 
-		// Read the data
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK; // Read the data
 		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
 		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
-		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
 		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
 		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
-		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
 		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
 		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
 
 		$finish;
