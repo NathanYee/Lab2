@@ -1,5 +1,5 @@
 module addresslatch
-#(parameter width = 8)
+#(parameter width = 7)
 (
 input clk,
 input [width-1:0]d,
