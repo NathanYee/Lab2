@@ -2,6 +2,12 @@
 // SPI Memory
 //------------------------------------------------------------------------
 
+`include "inputconditioner.v"
+`include "finitestatemachine.v"
+`include "shiftregister.v"
+`include "datamemory.v"
+`include "addresslatch.v"
+
 module spiMemory
 (
     input           clk,        // FPGA clock
