@@ -29,16 +29,18 @@ output              sdataOut       // Positive edge synchronized
 
 			// Peripheral clock; or, putting the "shift" in "shift register"
 			if ((pclkWas == 0) && (pclk == 1)) begin
-				pclkWas <= pclk; // Put in conditional so it executes after condition is checked
-				// $display("Left shift, bringing in %b", sdataIn);
-				mem <= {mem, sdataIn}; // Move the values left by one, and append sdataIn (silently dropping MSB)
+				pclkWas = pclk; // Put in conditional so it executes after condition is checked
+				$display("Left shift, bringing in %b", sdataIn);
+				mem = {mem[width-2:0], sdataIn}; // Move the values left by one, and append sdataIn (silently dropping MSB)
+				$display("SR now contains: %b", mem);
 			end
 			else
-				pclkWas <= pclk;
+				pclkWas = pclk;
 
 			// Parallel loading
 			if (pload == 1) 
-				mem <= pdataIn;
+				$display("SR parallel loading value %b", pdataIn);
+				mem = pdataIn;
 
     end
 endmodule
