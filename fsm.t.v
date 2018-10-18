@@ -6,6 +6,8 @@
 `include "addresslatch.v"
 
 `define TICK clk = 1; #10; clk = 0; #10; clk = 1; #10; clk = 0; #10; clk = 1; #10; clk = 0; #10;
+`define ASSERT_1 if (miso != 1) $display("t = %d, miso is 0, should be 1", $time);
+`define ASSERT_0 if (miso != 0) $display("t = %d, miso is 1, should be 0", $time);
 
 module testfsm();
 	reg clk, sck, cs, mosi, miso;
@@ -35,7 +37,7 @@ module testfsm();
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
 
-		sck = 0; mosi = 1; `TICK; sck = 1; `TICK; // Write mode
+		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // Write mode
 
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // Data to write
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
@@ -57,16 +59,17 @@ module testfsm();
 		sck = 0; mosi = 1; `TICK; sck = 1; `TICK;
 		sck = 0; mosi = 0; `TICK; sck = 1; `TICK;
 
-		sck = 0; mosi = 0; `TICK; sck = 1; `TICK; // Read mode
+		sck = 0; mosi = 1; `TICK; sck = 1; `TICK; // Read mode
 
-		sck = 0; `TICK; sck = 1; `TICK; // Read the data
-		sck = 0; `TICK; sck = 1; `TICK;
-		sck = 0; `TICK; sck = 1; `TICK;
-		sck = 0; `TICK; sck = 1; `TICK;
-		sck = 0; `TICK; sck = 1; `TICK;
-		sck = 0; `TICK; sck = 1; `TICK;
-		sck = 0; `TICK; sck = 1; `TICK;
-		sck = 0; `TICK; sck = 1; `TICK;
+		// Read the data
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_0; sck = 1; `TICK;
+		sck = 0; `TICK; `ASSERT_1; sck = 1; `TICK;
 
 		$finish;
 	end
