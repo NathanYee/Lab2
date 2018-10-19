@@ -7,6 +7,7 @@
 `include "shiftregister.v"
 `include "datamemory.v"
 `include "addresslatch.v"
+`include "tri_buf.v"
 
 module spiMemory
 (
@@ -30,7 +31,8 @@ module spiMemory
 
     // Shift Register
    	wire [7:0] dm_out, sr_contents;
-    shiftregister sr(clk, pos_edge, sr_we, dm_out, mosi_cond, sr_contents);
+    wire sr_out_serial;
+    shiftregister sr(clk, pos_edge, sr_we, dm_out, mosi_cond, sr_contents, sr_out_serial);
 
     // Address Latch
 	wire [6:0] dm_addr;
@@ -39,8 +41,16 @@ module spiMemory
     // Data Memory
     datamemory dm(clk, dm_out, dm_addr, dm_we, sr_contents);
 
-    // DFF + Output
-    
+    // DFF
+    wire sr_serial_on_neg_edge;
+    always @(posedge clk) begin
+        if (neg_edge) begin
+            sr_serial_on_neg_edge <= sr_out_serial;
+        end
+    end
+
+    // Tri state buffer
+    tri_buf tsb(sr_serial_on_neg_edge, miso_pin, miso_we);
 
 endmodule
    
