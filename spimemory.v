@@ -18,6 +18,10 @@ module spiMemory
     output [3:0]    leds        // LEDs for debugging
 )
 
+    wire mosi_cond, pos_edge, neg_edge, cs_cond;
+    inputconditioner mosi_c(clk, mosi_pin, mosi_cond, _, _);
+    inputconditioner sclk_c(clk, sclk_pin, _, pos_edge, neg_edge);
+    inputconditioner cs_c(clk, cs_pin, cs_cond, _, _);
 
 endmodule
    
