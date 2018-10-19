@@ -32,7 +32,15 @@ module spiMemory
    	wire [7:0] dm_out, sr_contents;
     shiftregister sr(clk, pos_edge, sr_we, dm_out, mosi_cond, sr_contents);
 
-
+    // Address Latch
 	wire [6:0] dm_addr;
+    addresslatch al(clk, sr_contents[6:0], addr_we, dm_addr);
+
+    // Data Memory
+    datamemory dm(clk, dm_out, dm_addr, dm_we, sr_contents);
+
+    // DFF + Output
+    
+
 endmodule
    
