@@ -35,7 +35,7 @@ module spiMemory
     shiftregister sr(clk, pos_edge, sr_we, dm_out, mosi_cond, sr_contents, sr_out_serial);
 
     // Address Latch
-	wire [6:0] dm_addr;
+		wire [6:0] dm_addr;
     addresslatch al(clk, sr_contents[6:0], addr_we, dm_addr);
 
     // Data Memory
