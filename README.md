@@ -1,3 +1,6 @@
+Ben: our writeup is here:
+https://docs.google.com/document/d/1OIIWwx2aj5eg3ILki2uA_aJYRRj_E4p2WdkjbhG6p5k/edit?usp=sharing
+
 # CompArch Lab 2: SPI Memory
 
 In this lab you will create an [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus) Memory and instantiate it on FPGA.  You will also create an automated test harness and use it to verify your memory.
