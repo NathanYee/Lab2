@@ -3,10 +3,7 @@
 //------------------------------------------------------------------------
 
 `include "inputconditioner.v"
-`include "finitestatemachine.v"
-`include "shiftregister.v"
-`include "datamemory.v"
-`include "addresslatch.v"
+`include "corelogic.v"
 `include "tri_buf.v"
 
 module spiMemory
@@ -17,35 +14,22 @@ module spiMemory
     output          miso_pin,   // SPI master in slave out
     input           mosi_pin,   // SPI master out slave in
     output [3:0]    leds        // LEDs for debugging
-)
+);
 
     // Condition inputs
-    wire mosi_cond, pos_edge, neg_edge, cs_cond;
+    wire mosi_cond, pos_edge, neg_edge, cs_cond, miso_we, sr_out_serial; 
+		reg sr_serial_on_neg_edge;
     inputconditioner mosi_c(clk, mosi_pin, mosi_cond, _, _);
-    inputconditioner sclk_c(clk, sclk_pin, _, pos_edge, neg_edge);
+    inputconditioner sclk_c(clk, sclk_pin, _, sclk_pos_edge, sclk_neg_edge);
     inputconditioner cs_c(clk, cs_pin, cs_cond, _, _);
 
-    // Finite State Machine
-    wire miso_we, dm_we, sr_we, addr_we;
-    finitestatemachine fsm(clk, pos_edge, cs_cond, mosi_cond, miso_we, dm_we, addr_we, sr_we);
+		// Logic
+		corelogic cl(clk, sclk_pos_edge, cs_cond, mosi_cond, sr_out_serial, miso_we);
 
-    // Shift Register
-   	wire [7:0] dm_out, sr_contents;
-    wire sr_out_serial;
-    shiftregister sr(clk, pos_edge, sr_we, dm_out, mosi_cond, sr_contents, sr_out_serial);
-
-    // Address Latch
-		wire [6:0] dm_addr;
-    addresslatch al(clk, sr_contents[6:0], addr_we, dm_addr);
-
-    // Data Memory
-    datamemory dm(clk, dm_out, dm_addr, dm_we, sr_contents);
-
-    // DFF
-    wire sr_serial_on_neg_edge;
+    // D flip-flop
     always @(posedge clk) begin
         if (neg_edge) begin
-            sr_serial_on_neg_edge <= sr_out_serial;
+            sr_serial_on_neg_edge = sr_out_serial;
         end
     end
 
